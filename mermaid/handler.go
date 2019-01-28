@@ -4,7 +4,7 @@ import "net/http"
 
 // Reporter represents an a health reporter.
 type Stater interface {
-	// IsHealthy emits error if application is not healthy.
+	// GetStats gets diagram string
 	GetStats() (string, error)
 }
 
@@ -19,7 +19,7 @@ func NewHandler() *Handler {
 	return &Handler{}
 }
 
-// With adds reports to the handler.
+// With adds stats to the handler.
 func (h *Handler) With(stats ...Stater) *Handler {
 	h.stats = stats
 	return h
