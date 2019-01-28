@@ -1,2 +1,2 @@
 # diagram
-Diagram representation for streams topology
+Diagram representations for streams topology
