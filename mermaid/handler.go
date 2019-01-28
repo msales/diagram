@@ -34,9 +34,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 			return
 		}
-		_, err = w.Write([]byte(stats))
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-		}
+		w.Write([]byte(stats))
 	}
 }
