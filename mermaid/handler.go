@@ -21,7 +21,7 @@ func NewHandler() *Handler {
 
 // With adds reports to the handler.
 func (h *Handler) With(stats ...Stater) *Handler {
-	h.stats = append(h.stats, stats...)
+	h.stats = stats
 	return h
 }
 

@@ -90,14 +90,35 @@ J[filter-performing] --> K[budget-analyze]
 K[budget-analyze] --> L[flat-map]
 L[flat-map] --> D[merge-release]`
 
+	orExpected := `graph LR
+A[event-source] --> B[filter-cubes]
+B[filter-cubes] --> C[event-deserialize]
+C[event-deserialize] --> D[group-processor]
+D[group-processor] --> E[filter-performing]
+E[filter-performing] --> F[budget-analyze]
+F[budget-analyze] --> G[flat-map]
+G[flat-map] --> H[merge-release]
+H[merge-release] --> I[decision-sink]
+J[bucket-poll] --> K[bucket-to-event]
+K[bucket-to-event] --> L[bucket-processor]
+L[bucket-processor] --> H[merge-release]`
+
 	stats, err := s.GetStats()
 	assert.NoError(t, err)
-	assert.Equal(t, expected, stats)
+	if stats == orExpected {
+		assert.Equal(t, orExpected, stats)
+	} else {
+		assert.Equal(t, expected, stats)
+	}
 
-	s = mermaid.NewStat(topology)
+	// second check if it didn't disappear.
 	stats, err = s.GetStats()
 	assert.NoError(t, err)
-	assert.Equal(t, expected, stats)
+	if stats == orExpected {
+		assert.Equal(t, orExpected, stats)
+	} else {
+		assert.Equal(t, expected, stats)
+	}
 }
 
 func TestStat_GetStatsWithEmptyTopology(t *testing.T) {
